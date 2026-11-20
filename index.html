@@ -2,41 +2,57 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRUP 2 ARENA ⚡ Neon Live Quiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>GRUP 2 ARENA ⚡ Live Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+        html, body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #05020d;
             color: #ffffff;
             overflow-x: hidden;
             position: relative;
+            min-height: 100dvh;
+            width: 100%;
+            touch-action: manipulation;
         }
         h1, h2, h3, .font-cyber { font-family: 'Space Grotesk', sans-serif; }
 
-        /* Egzotik Hareketli Neon Aurora Arka Plan */
-        .neon-bg-orb {
+        /* Egzotik Hareketli Aurora Arka Plan */
+        .bg-orb {
             position: fixed;
             border-radius: 50%;
             filter: blur(110px);
             z-index: -1;
             opacity: 0.55;
+            pointer-events: none;
             animation: floatOrb 12s infinite alternate ease-in-out;
         }
-        .orb-1 { width: 420px; height: 420px; background: #ff007f; top: -80px; left: -100px; }
-        .orb-2 { width: 480px; height: 480px; background: #7000ff; bottom: -120px; right: -100px; animation-delay: -4s; }
-        .orb-3 { width: 350px; height: 350px; background: #00f5d4; top: 40%; left: 45%; opacity: 0.35; animation-delay: -8s; }
+        .orb-1 { width: 320px; height: 320px; background: #ff007f; top: -60px; left: -80px; }
+        .orb-2 { width: 380px; height: 380px; background: #7000ff; bottom: -100px; right: -80px; animation-delay: -4s; }
+        .orb-3 { width: 280px; height: 280px; background: #00f5d4; top: 40%; left: 40%; opacity: 0.35; animation-delay: -8s; }
+
+        @media (min-width: 768px) {
+            .orb-1 { width: 420px; height: 420px; top: -80px; left: -100px; }
+            .orb-2 { width: 480px; height: 480px; bottom: -120px; right: -100px; }
+            .orb-3 { width: 350px; height: 350px; top: 40%; left: 45%; }
+        }
 
         @keyframes floatOrb {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(45px, -35px) scale(1.15); }
         }
 
-        /* iPhone Hello Neon Lazer Animasyonu */
+        /* iPhone Hello Açılış Animasyonu */
         .hello-svg path {
             stroke-dasharray: 1000;
             stroke-dashoffset: 1000;
@@ -47,56 +63,62 @@
         .fade-out { animation: fadeOut 0.8s ease forwards; }
         @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
-        /* Neon Glass Kartlar ve Parlamalar */
-        .neon-glass {
-            background: rgba(14, 8, 32, 0.72);
+        /* Glass Kartlar ve Parlamalar */
+        .glass-card {
+            background: rgba(14, 8, 32, 0.78);
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 0, 127, 0.35);
             box-shadow: 0 0 30px rgba(112, 0, 255, 0.2), inset 0 0 20px rgba(0, 245, 212, 0.05);
         }
-        .neon-border-cyan {
+        .border-cyan-glow {
             border: 1px solid rgba(0, 245, 212, 0.5);
             box-shadow: 0 0 20px rgba(0, 245, 212, 0.25);
         }
-        .neon-btn-pink {
+        .btn-pink-glow {
             background: linear-gradient(135deg, #ff007f 0%, #9d00ff 100%);
             box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
         }
-        .neon-btn-pink:hover {
+        .btn-pink-glow:hover {
             box-shadow: 0 0 32px rgba(255, 0, 127, 0.85);
             transform: translateY(-1px);
         }
-        .neon-btn-acid {
+        .btn-acid-glow {
             background: linear-gradient(135deg, #00f5d4 0%, #00bb55 100%);
             color: #04130d;
             box-shadow: 0 0 20px rgba(0, 245, 212, 0.45);
         }
-        .neon-btn-acid:hover {
+        .btn-acid-glow:hover {
             box-shadow: 0 0 32px rgba(0, 245, 212, 0.85);
         }
 
-        /* Egzotik Neon Kahoot Şıkları */
-        .opt-neon-0 { background: linear-gradient(135deg, #ff0055, #ff4d00); box-shadow: 0 0 18px rgba(255, 0, 85, 0.45); }
-        .opt-neon-1 { background: linear-gradient(135deg, #00d2ff, #3a7bd5); box-shadow: 0 0 18px rgba(0, 210, 255, 0.45); }
-        .opt-neon-2 { background: linear-gradient(135deg, #f7971e, #ffd200); color: #111; box-shadow: 0 0 18px rgba(255, 210, 0, 0.45); }
-        .opt-neon-3 { background: linear-gradient(135deg, #00f260, #0575e6); box-shadow: 0 0 18px rgba(0, 242, 96, 0.45); }
-        .opt-neon-4 { background: linear-gradient(135deg, #b200ff, #ff00c8); box-shadow: 0 0 18px rgba(178, 0, 255, 0.45); }
+        /* Egzotik Kahoot Şıkları */
+        .opt-style-0 { background: linear-gradient(135deg, #ff0055, #ff4d00); box-shadow: 0 0 18px rgba(255, 0, 85, 0.45); }
+        .opt-style-1 { background: linear-gradient(135deg, #00d2ff, #3a7bd5); box-shadow: 0 0 18px rgba(0, 210, 255, 0.45); }
+        .opt-style-2 { background: linear-gradient(135deg, #f7971e, #ffd200); color: #111; box-shadow: 0 0 18px rgba(255, 210, 0, 0.45); }
+        .opt-style-3 { background: linear-gradient(135deg, #00f260, #0575e6); box-shadow: 0 0 18px rgba(0, 242, 96, 0.45); }
+        .opt-style-4 { background: linear-gradient(135deg, #b200ff, #ff00c8); box-shadow: 0 0 18px rgba(178, 0, 255, 0.45); }
+
+        /* Mobil & Masaüstü Scrollbar Dengesi */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #070314; }
+        ::-webkit-scrollbar-thumb { background: #9d00ff; border-radius: 9999px; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-[100dvh] flex flex-col justify-between">
 
-    <!-- ARKA PLAN EGZOTİK NEON IŞIK KÜRELERİ -->
-    <div class="neon-bg-orb orb-1"></div>
-    <div class="neon-bg-orb orb-2"></div>
-    <div class="neon-bg-orb orb-3"></div>
+    <!-- ARKA PLAN EGZOTİK IŞIK KÜRELERİ -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
 
-    <!-- 1. IPHONE HELLO NEON AÇILIŞ EKRANI -->
-    <div id="helloScreen" class="fixed inset-0 z-50 bg-[#04010a] flex flex-col items-center justify-center transition-all">
-        <svg class="hello-svg w-80 md:w-[440px] h-40" viewBox="0 0 500 180" fill="none">
+    <!-- 1. IPHONE HELLO AÇILIŞ EKRANI -->
+    <div id="helloScreen" class="fixed inset-0 z-50 bg-[#04010a] flex flex-col items-center justify-center p-4 transition-all">
+        <svg class="hello-svg w-72 sm:w-80 md:w-[440px] h-36 md:h-40" viewBox="0 0 500 180" fill="none">
             <path d="M55 125 C75 85, 95 25, 80 20 C65 15, 50 90, 55 130 C60 110, 85 85, 100 95 C110 102, 102 128, 118 128 C135 128, 155 105, 148 92 C140 80, 122 98, 128 118 C135 135, 165 128, 185 95 C205 60, 215 20, 200 18 C185 16, 175 95, 185 125 C195 135, 225 100, 245 55 C260 22, 252 15, 240 25 C228 38, 225 105, 238 125 C250 135, 275 110, 285 95 C275 112, 280 130, 300 128 C320 126, 332 102, 318 90 C304 78, 285 96, 292 115" 
-                  stroke="url(#neonGrad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                  stroke="url(#gradColors)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
             <defs>
-                <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="gradColors" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stop-color="#00f5d4"/>
                     <stop offset="35%" stop-color="#ff007f"/>
                     <stop offset="70%" stop-color="#ffe600"/>
@@ -104,65 +126,97 @@
                 </linearGradient>
             </defs>
         </svg>
-        <p class="text-cyan-300 font-cyber text-xs md:text-sm tracking-[0.35em] uppercase mt-2 animate-pulse drop-shadow-[0_0_8px_#00f5d4]">
-            PREP GROUP 2 • CYBER ARENA
+        <p class="text-cyan-300 font-cyber text-xs md:text-sm tracking-[0.35em] uppercase mt-2 animate-pulse drop-shadow-[0_0_8px_#00f5d4] text-center">
+            LAÜ HAZIRLIK • GRUP 2
         </p>
-        <button onclick="enterApp()" class="mt-9 px-9 py-3.5 rounded-full neon-btn-pink text-white font-extrabold text-sm tracking-wide hover:scale-105 transition">
+        <button onclick="enterApp()" class="mt-8 px-8 md:px-9 py-3.5 rounded-full btn-pink-glow text-white font-extrabold text-sm tracking-wide hover:scale-105 active:scale-95 transition">
             SİSTEME GİRİŞ YAP ⚡
         </button>
     </div>
 
-    <!-- ÜST BAR (SAĞ ÜST YÖNETİCİ GİRİŞİ) -->
-    <header class="w-full px-6 py-4 flex justify-between items-center border-b border-fuchsia-500/30 neon-glass sticky top-0 z-30">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="showView('studentLobby')">
-            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#ff007f] via-[#9d00ff] to-[#00f5d4] flex items-center justify-center font-cyber font-extrabold text-lg shadow-[0_0_20px_rgba(255,0,127,0.6)]">
-                G2
+    <!-- ÜST BAR (SOL ÜST: TÜRK BAYRAĞI - ATATÜRK - KKTC BAYRAĞI | SAĞ ÜST: YÖNETİCİ GİRİŞİ) -->
+    <header class="w-full px-3 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-2 border-b border-fuchsia-500/30 glass-card sticky top-0 z-30">
+        <div class="flex items-center gap-2 sm:gap-3.5">
+            <!-- TÜRK BAYRAĞI - ATATÜRK - KKTC BAYRAĞI (HER EKRANDA SABİT) -->
+            <div class="flex items-center gap-1 sm:gap-1.5 bg-[#090418]/90 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl border border-fuchsia-500/40 shadow-[0_0_15px_rgba(255,0,127,0.25)] shrink-0" title="Türkiye • Mustafa Kemal Atatürk • KKTC">
+                <!-- Türk Bayrağı SVG -->
+                <svg class="w-6 h-4 sm:w-7 sm:h-5 rounded-[3px] shadow-sm" viewBox="0 0 30 20">
+                    <rect width="30" height="20" fill="#E30A17"/>
+                    <circle cx="11" cy="10" r="5" fill="#ffffff"/>
+                    <circle cx="12.2" cy="10" r="4" fill="#E30A17"/>
+                    <polygon points="15.5,10 18.2,10.9 16.5,8.6 16.5,11.4 18.2,9.1" fill="#ffffff"/>
+                </svg>
+
+                <!-- Mustafa Kemal Atatürk Portre Rozeti -->
+                <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden border border-amber-400/80 shadow-[0_0_10px_rgba(251,191,36,0.4)] bg-slate-900 flex items-center justify-center shrink-0">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg" alt="Atatürk" class="w-full h-full object-cover object-top">
+                </div>
+
+                <!-- KKTC Bayrağı SVG -->
+                <svg class="w-6 h-4 sm:w-7 sm:h-5 rounded-[3px] shadow-sm" viewBox="0 0 30 20">
+                    <rect width="30" height="20" fill="#ffffff"/>
+                    <rect y="2" width="30" height="2.2" fill="#E30A17"/>
+                    <rect y="15.8" width="30" height="2.2" fill="#E30A17"/>
+                    <circle cx="12" cy="10" r="4.2" fill="#E30A17"/>
+                    <circle cx="13" cy="10" r="3.35" fill="#ffffff"/>
+                    <polygon points="15.8,10 18.1,10.75 16.7,8.8 16.7,11.2 18.1,9.25" fill="#E30A17"/>
+                </svg>
             </div>
-            <div>
-                <h1 class="font-bold text-base md:text-lg leading-tight bg-gradient-to-r from-[#00f5d4] via-white to-[#ff007f] bg-clip-text text-transparent">
-                    LAÜ Hazırlık Sınıfı
-                </h1>
-                <p class="text-xs text-fuchsia-300/80 font-medium">Neon English Arena • Group 2</p>
+
+            <!-- Logo & Sınıf Başlığı -->
+            <div class="flex items-center gap-2 cursor-pointer" onclick="showView('studentLobby')">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#ff007f] via-[#9d00ff] to-[#00f5d4] flex items-center justify-center font-cyber font-extrabold text-sm sm:text-base shadow-[0_0_20px_rgba(255,0,127,0.6)] shrink-0">
+                    G2
+                </div>
+                <div class="hidden sm:block">
+                    <h1 class="font-bold text-sm md:text-base leading-tight bg-gradient-to-r from-[#00f5d4] via-white to-[#ff007f] bg-clip-text text-transparent">
+                        LAÜ Hazırlık Sınıfı
+                    </h1>
+                    <p class="text-[11px] text-fuchsia-300/80 font-medium">English Interactive Arena • Group 2</p>
+                </div>
             </div>
         </div>
 
-        <!-- ORTA ÜST YÖNETİCİ MENÜSÜ -->
-        <nav id="adminTopNav" class="hidden md:flex items-center gap-2 bg-[#0b051d]/90 p-1.5 rounded-2xl border border-cyan-400/40 shadow-[0_0_15px_rgba(0,245,212,0.2)]">
-            <button onclick="switchAdminTab('past')" id="nav-past" class="admin-nav-btn px-4 py-2 rounded-xl text-sm font-bold neon-btn-pink text-white transition">Geçmiş Etkinlikler</button>
-            <button onclick="switchAdminTab('create')" id="nav-create" class="admin-nav-btn px-4 py-2 rounded-xl text-sm font-bold text-cyan-200 hover:bg-fuchsia-950/60 transition">Yeni Etkinlik Oluştur</button>
+        <!-- ORTA ÜST YÖNETİCİ MENÜSÜ (MASAÜSTÜ) -->
+        <nav id="adminTopNav" class="hidden lg:flex items-center gap-2 bg-[#0b051d]/90 p-1.5 rounded-2xl border border-cyan-400/40 shadow-[0_0_15px_rgba(0,245,212,0.2)]">
+            <button onclick="switchAdminTab('past')" id="nav-past" class="admin-nav-btn px-4 py-2 rounded-xl text-sm font-bold btn-pink-glow text-white transition">Geçmiş Etkinlikler</button>
+            <button onclick="switchAdminTab('create')" id="nav-create" class="admin-nav-btn px-4 py-2 rounded-xl text-sm font-bold text-cyan-200 hover:bg-fuchsia-950/60 transition flex items-center gap-1.5">
+                <span id="navCreateLockIcon" class="hidden">🔒</span> Yeni Etkinlik Oluştur
+            </button>
             <button onclick="switchAdminTab('analytics')" id="nav-analytics" class="admin-nav-btn px-4 py-2 rounded-xl text-sm font-bold text-cyan-200 hover:bg-fuchsia-950/60 transition">Detaylı Analiz</button>
         </nav>
 
-        <div class="flex items-center gap-3">
-            <button onclick="toggleQRModal()" class="px-4 py-2 rounded-xl bg-[#12092c] hover:bg-[#1e0f47] text-cyan-300 text-xs md:text-sm font-bold border border-cyan-400/50 shadow-[0_0_12px_rgba(0,245,212,0.25)] transition">
-                📱 QR Kodu Göster
+        <!-- SAĞ ÜST BUTONLAR -->
+        <div class="flex items-center gap-1.5 sm:gap-2.5">
+            <button onclick="toggleQRModal()" class="px-2.5 sm:px-3.5 py-2 rounded-xl bg-[#12092c] hover:bg-[#1e0f47] text-cyan-300 text-[11px] sm:text-sm font-bold border border-cyan-400/50 shadow-[0_0_12px_rgba(0,245,212,0.25)] transition">
+                📱 <span class="hidden xs:inline">QR Kodu</span><span class="xs:hidden">QR</span>
             </button>
-            <button id="adminLoginBtn" onclick="showView('adminLogin')" class="px-4 py-2 rounded-xl neon-btn-pink text-xs md:text-sm font-extrabold transition">
+            <button id="adminLoginBtn" onclick="showView('adminLogin')" class="px-3 sm:px-4 py-2 rounded-xl btn-pink-glow text-[11px] sm:text-sm font-extrabold transition">
                 Yönetici Girişi
             </button>
-            <button id="adminLogoutBtn" onclick="logoutAdmin()" class="hidden px-4 py-2 rounded-xl bg-rose-600/30 text-rose-300 border border-rose-500 text-xs font-bold shadow-[0_0_12px_rgba(244,63,94,0.4)]">
+            <button id="adminLogoutBtn" onclick="logoutAdmin()" class="hidden px-3 py-2 rounded-xl bg-rose-600/30 text-rose-300 border border-rose-500 text-[11px] sm:text-xs font-bold shadow-[0_0_12px_rgba(244,63,94,0.4)]">
                 Çıkış Yap
             </button>
         </div>
     </header>
 
     <!-- ANA İÇERİK ALANI -->
-    <main class="flex-1 container mx-auto px-4 py-8 max-w-6xl">
+    <main class="flex-1 container mx-auto px-3 sm:px-4 py-5 sm:py-8 max-w-6xl w-full">
 
         <!-- EKRAN A: ÖĞRENCİ GİRİŞ & LOBİ EKRANI -->
-        <section id="view-studentLobby" class="max-w-xl mx-auto mt-6">
-            <div class="neon-glass rounded-3xl p-8">
+        <section id="view-studentLobby" class="max-w-xl mx-auto mt-2 sm:mt-6">
+            <div class="glass-card rounded-3xl p-5 sm:p-8">
                 <!-- Etkinlik Durum Kartı -->
-                <div id="eventStatusBanner" class="mb-6 p-4 rounded-2xl bg-[#090418]/90 border border-amber-400/50 shadow-[0_0_15px_rgba(251,191,36,0.2)] text-center">
+                <div id="eventStatusBanner" class="mb-5 sm:mb-6 p-3.5 sm:p-4 rounded-2xl bg-[#090418]/90 border border-amber-400/50 shadow-[0_0_15px_rgba(251,191,36,0.2)] text-center">
                     <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#ffe600] animate-ping mr-2"></span>
-                    <span id="eventStatusText" class="font-bold text-[#ffe600] text-sm md:text-base">Pembe Hoca henüz etkinlik hazırlamadı.</span>
+                    <span id="eventStatusText" class="font-bold text-[#ffe600] text-xs sm:text-base">Pembe Hoca henüz etkinlik hazırlamadı.</span>
                 </div>
 
-                <div class="text-center mb-6">
-                    <h2 class="text-3xl font-extrabold mb-2 bg-gradient-to-r from-[#00f5d4] via-[#ff007f] to-[#ffe600] bg-clip-text text-transparent">
+                <div class="text-center mb-5 sm:mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 bg-gradient-to-r from-[#00f5d4] via-[#ff007f] to-[#ffe600] bg-clip-text text-transparent">
                         Etkinliğe Katıl
                     </h2>
-                    <div class="inline-block bg-fuchsia-500/15 border border-fuchsia-400/50 text-fuchsia-200 text-xs font-bold px-3.5 py-1.5 rounded-xl shadow-[0_0_12px_rgba(255,0,127,0.25)]">
+                    <div class="inline-block bg-fuchsia-500/15 border border-fuchsia-400/50 text-fuchsia-200 text-[11px] sm:text-xs font-bold px-3 py-1.5 rounded-xl shadow-[0_0_12px_rgba(255,0,127,0.25)]">
                         ⚠️ Yoklama ve analiz için <u>Gerçek Ad Soyad</u> kullanmak zorunludur!
                     </div>
                 </div>
@@ -170,55 +224,55 @@
                 <div id="studentJoinForm" class="space-y-4">
                     <div>
                         <label class="block text-xs font-extrabold uppercase tracking-wider text-cyan-300 mb-1.5">Adınız ve Soyadınız</label>
-                        <input type="text" id="studentNameInput" placeholder="Örn: Berat Özer" class="w-full px-4 py-3.5 rounded-xl bg-[#080314] border border-fuchsia-500/40 focus:border-[#00f5d4] focus:shadow-[0_0_15px_rgba(0,245,212,0.35)] focus:outline-none text-white font-bold">
+                        <input type="text" id="studentNameInput" autocomplete="name" placeholder="Örn: Ramazan Atlı" class="w-full px-4 py-3.5 rounded-xl bg-[#080314] border border-fuchsia-500/40 focus:border-[#00f5d4] focus:shadow-[0_0_15px_rgba(0,245,212,0.35)] focus:outline-none text-white text-base font-bold">
                     </div>
-                    <button onclick="joinLobby()" class="w-full py-4 rounded-xl neon-btn-pink font-extrabold text-base tracking-wide transition">
+                    <button onclick="joinLobby()" class="w-full py-4 rounded-xl btn-pink-glow font-extrabold text-base tracking-wide active:scale-95 transition">
                         LOBİYE GİR 🚀
                     </button>
                 </div>
 
                 <!-- Lobi Bekleme & Ready Alanı -->
                 <div id="studentWaitingArea" class="hidden text-center space-y-5 mt-4">
-                    <div class="p-4 rounded-2xl bg-[#110729] neon-border-cyan">
+                    <div class="p-4 rounded-2xl bg-[#110729] border-cyan-glow">
                         <p class="text-sm text-cyan-200">Hoş geldin, <strong id="displayStudentName" class="text-[#00f5d4] text-lg"></strong>!</p>
                         <p id="lobbySubStatus" class="text-xs text-fuchsia-300 mt-1">Etkinlik hazır olduğunda aşağıdan "READY" vermelisin.</p>
                     </div>
 
-                    <button id="readyBtn" onclick="toggleStudentReady()" class="w-full py-4 rounded-2xl neon-btn-acid font-extrabold text-lg transition transform active:scale-95">
+                    <button id="readyBtn" onclick="toggleStudentReady()" class="w-full py-4 rounded-2xl btn-acid-glow font-extrabold text-base sm:text-lg transition transform active:scale-95">
                         ⚡ HAZIRIM (READY)
                     </button>
 
                     <div class="text-left">
-                        <div class="flex justify-between text-xs text-cyan-300 font-bold mb-2">
+                        <div class="flex justify-between text-[11px] sm:text-xs text-cyan-300 font-bold mb-2">
                             <span>LOBİDEKİ ÖĞRENCİLER (<span id="lobbyCount">0</span>/70)</span>
                             <span class="text-fuchsia-300">Min. 5 Katılımcı Gerekir</span>
                         </div>
-                        <div id="lobbyPlayersList" class="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-3 rounded-xl bg-[#070312] border border-purple-500/30"></div>
+                        <div id="lobbyPlayersList" class="flex flex-wrap gap-2 max-h-44 overflow-y-auto p-3 rounded-xl bg-[#070312] border border-purple-500/30"></div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- EKRAN B: YÖNETİCİ GİRİŞ EKRANI -->
-        <section id="view-adminLogin" class="hidden max-w-md mx-auto mt-10">
-            <div class="neon-glass rounded-3xl p-8">
+        <section id="view-adminLogin" class="hidden max-w-md mx-auto mt-4 sm:mt-10">
+            <div class="glass-card rounded-3xl p-6 sm:p-8">
                 <div class="text-center mb-6">
                     <span class="px-3.5 py-1 rounded-full bg-fuchsia-500/20 border border-fuchsia-400/50 text-fuchsia-300 text-xs font-extrabold">YETKİLİ PERSONEL</span>
-                    <h2 class="text-xl font-extrabold mt-3 leading-snug text-white">
+                    <h2 class="text-lg sm:text-xl font-extrabold mt-3 leading-snug text-white">
                         Lefke Avrupa Üniversitesi Hazırlık Sınıfı Grup 2 Yönetici Giriş Sistemine Hoş Geldin
                     </h2>
                 </div>
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-cyan-300 mb-1">Kullanıcı Adı</label>
-                        <input type="text" id="adminUser" placeholder="Kullanıcı adınız" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-white focus:border-[#ff007f] outline-none font-bold">
+                        <input type="text" id="adminUser" autocomplete="username" placeholder="Kullanıcı adınız" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-white text-base focus:border-[#ff007f] outline-none font-bold">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-cyan-300 mb-1">Şifre</label>
-                        <input type="password" id="adminPass" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-white focus:border-[#ff007f] outline-none font-bold">
+                        <input type="password" id="adminPass" autocomplete="current-password" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-white text-base focus:border-[#ff007f] outline-none font-bold">
                     </div>
                     <p id="loginError" class="text-xs text-rose-400 hidden font-bold">Hatalı kullanıcı adı veya şifre!</p>
-                    <button onclick="handleAdminLogin()" class="w-full py-3.5 rounded-xl neon-btn-pink font-extrabold text-white transition">
+                    <button onclick="handleAdminLogin()" class="w-full py-3.5 rounded-xl btn-pink-glow font-extrabold text-white active:scale-95 transition">
                         PANELE GİRİŞ YAP ⚡
                     </button>
                 </div>
@@ -226,31 +280,33 @@
         </section>
 
         <!-- EKRAN C: YÖNETİCİ PANELİ -->
-        <section id="view-adminPanel" class="hidden space-y-6">
-            <!-- Mobil Menü -->
-            <div class="flex md:hidden gap-2 justify-center">
-                <button onclick="switchAdminTab('past')" class="px-3 py-2 rounded-lg bg-fuchsia-950 border border-fuchsia-500/40 text-xs font-bold">Geçmiş</button>
-                <button onclick="switchAdminTab('create')" class="px-3 py-2 rounded-lg bg-fuchsia-950 border border-fuchsia-500/40 text-xs font-bold">+ Yeni Etkinlik</button>
-                <button onclick="switchAdminTab('analytics')" class="px-3 py-2 rounded-lg bg-fuchsia-950 border border-fuchsia-500/40 text-xs font-bold">Analiz</button>
+        <section id="view-adminPanel" class="hidden space-y-5 sm:space-y-6">
+            <!-- Mobil & Tablet Yönetici Sekme Barı -->
+            <div class="grid grid-cols-3 lg:hidden gap-2 bg-[#0b051d]/90 p-1.5 rounded-2xl border border-cyan-400/40">
+                <button onclick="switchAdminTab('past')" id="mob-nav-past" class="py-2.5 px-2 rounded-xl btn-pink-glow text-white text-xs font-extrabold text-center transition">Geçmiş</button>
+                <button onclick="switchAdminTab('create')" id="mob-nav-create" class="py-2.5 px-2 rounded-xl text-cyan-200 text-xs font-extrabold text-center transition">
+                    <span id="mobCreateLockIcon" class="hidden">🔒</span> + Etkinlik
+                </button>
+                <button onclick="switchAdminTab('analytics')" id="mob-nav-analytics" class="py-2.5 px-2 rounded-xl text-cyan-200 text-xs font-extrabold text-center transition">Analiz</button>
             </div>
 
             <!-- Yönetici Bilgi & Aktif Lobi Kontrol Çubuğu -->
-            <div class="neon-glass rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4">
-                <div class="flex items-center gap-3">
-                    <span id="roleBadge" class="px-3 py-1 rounded-lg text-xs font-extrabold neon-btn-pink text-white">YÖNETİCİ</span>
-                    <span id="welcomeAdminText" class="font-bold text-sm text-cyan-200"></span>
+            <div class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <span id="roleBadge" class="px-3 py-1 rounded-lg text-[11px] sm:text-xs font-extrabold btn-pink-glow text-white">YÖNETİCİ</span>
+                    <span id="welcomeAdminText" class="font-bold text-xs sm:text-sm text-cyan-200"></span>
                 </div>
-                <div id="liveControlBox" class="flex items-center gap-3">
-                    <span class="text-xs text-slate-200">Hazır Öğrenci: <strong id="adminReadyCount" class="text-[#00f5d4] text-base">0</strong> (Min: 5)</span>
-                    <button id="startQuizBtn" onclick="startQuizEvent()" class="px-5 py-2.5 rounded-xl neon-btn-acid font-extrabold text-sm transition">
+                <div id="liveControlBox" class="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-purple-500/20">
+                    <span class="text-xs text-slate-200">Hazır: <strong id="adminReadyCount" class="text-[#00f5d4] text-base">0</strong> <span class="text-slate-400">(Min: 5)</span></span>
+                    <button id="startQuizBtn" onclick="startQuizEvent()" class="px-4 sm:px-5 py-2.5 rounded-xl btn-acid-glow font-extrabold text-xs sm:text-sm active:scale-95 transition">
                         🚀 Etkinliği Başlat
                     </button>
                 </div>
             </div>
 
             <!-- SEKME 1: GEÇMİŞ ETKİNLİKLER -->
-            <div id="tab-past" class="grid md:grid-cols-2 gap-6">
-                <div class="neon-glass rounded-3xl p-8 flex flex-col justify-between min-h-[280px]">
+            <div id="tab-past" class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between min-h-[260px]">
                     <div>
                         <h3 class="text-lg font-extrabold text-cyan-300 mb-2">Geçmiş Etkinlikler</h3>
                         <div id="pastEventsContainer" class="mt-4">
@@ -259,89 +315,97 @@
                             </p>
                         </div>
                     </div>
-                    <button onclick="switchAdminTab('create')" class="mt-6 w-full py-4 rounded-2xl border-2 border-dashed border-[#00f5d4]/60 hover:bg-[#00f5d4]/10 text-[#00f5d4] font-extrabold flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,245,212,0.15)] transition">
+                    <button id="pastCreateShortcutBtn" onclick="switchAdminTab('create')" class="mt-6 w-full py-4 rounded-2xl border-2 border-dashed border-[#00f5d4]/60 hover:bg-[#00f5d4]/10 text-[#00f5d4] font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,245,212,0.15)] transition">
                         <span class="text-2xl leading-none">+</span> Yeni Etkinlik Oluştur
                     </button>
                 </div>
 
-                <!-- PEMBE HOCA ÖZEL RÜTBE ALANI -->
-                <div class="neon-glass rounded-3xl p-8 relative overflow-hidden">
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-lg font-extrabold text-[#ff007f] drop-shadow-[0_0_8px_rgba(255,0,127,0.6)]">👑 Pembe Hoca Özel Soru Bankası</h3>
+                <!-- PEMBE HOCA ÖZEL SORU & ETKİNLİK RÜTBE ALANI -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                        <h3 class="text-base sm:text-lg font-extrabold text-[#ff007f] drop-shadow-[0_0_8px_rgba(255,0,127,0.6)]">👑 Pembe Hoca Soru & Müfredat Yetkisi</h3>
                         <span id="teacherLockBadge" class="text-xs bg-purple-950 border border-purple-500/40 px-2.5 py-1 rounded-md text-purple-200">🔒 Kilitli Rütbe</span>
                     </div>
-                    <p class="text-xs text-slate-300 mb-4">Bu alan yalnızca Pembe Hoca rütbesine özel ekstra sınav soruları ve müfredat havuzu içindir.</p>
+                    <p class="text-xs text-slate-300 mb-4">Soru yazma ve yeni etkinlik oluşturma yetkisi yalnızca Pembe Hoca hesabına tanımlıdır. Berat ve İbrahim analiz ve yönetim işlemlerini yapabilir.</p>
                     
                     <div id="teacherExclusiveContent" class="hidden space-y-3">
                         <textarea id="extraQuestionNote" rows="3" placeholder="Sınıfa özel ekstra grammer/vocabulary sorusu veya notu ekle..." class="w-full p-3 rounded-xl bg-[#080314] border border-pink-500/50 text-sm text-white"></textarea>
-                        <button onclick="saveExclusiveQuestion()" class="px-4 py-2 rounded-xl neon-btn-pink text-xs font-extrabold">Özel Havuza Kaydet</button>
+                        <button onclick="saveExclusiveQuestion()" class="px-4 py-2 rounded-xl btn-pink-glow text-xs font-extrabold">Özel Havuza Kaydet</button>
                         <div id="exclusiveList" class="text-xs text-cyan-200 space-y-1 mt-2"></div>
                     </div>
 
-                    <div id="teacherLockedOverlay" class="p-6 rounded-2xl bg-[#060211]/90 border border-fuchsia-500/30 text-center">
+                    <div id="teacherLockedOverlay" class="p-5 sm:p-6 rounded-2xl bg-[#060211]/90 border border-fuchsia-500/30 text-center">
                         <div class="text-3xl mb-2">🔒</div>
-                        <p class="text-sm font-extrabold text-fuchsia-300">Bu Bölüm Sadece Pembe Hoca'ya Açıktır</p>
-                        <p class="text-xs text-slate-400 mt-1">Asistan yöneticiler (Berat & İbrahim) bu alana erişemez.</p>
+                        <p class="text-sm font-extrabold text-fuchsia-300">Soru Yazma & Etkinlik Oluşturma Kilitlidir</p>
+                        <p class="text-xs text-slate-400 mt-1">Bu yetki sadece Pembe Hoca'ya aittir. Geçmiş etkinlikleri ve detaylı analizleri tam yetkiyle inceleyebilirsiniz.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- SEKME 2: YENİ ETKİNLİK OLUŞTUR -->
-            <div id="tab-create" class="hidden neon-glass rounded-3xl p-8">
-                <h3 class="text-xl font-extrabold text-[#00f5d4] mb-6">Yeni İngilizce Etkinliği Oluştur ⚡</h3>
-                
-                <div id="creatorStep1" class="grid md:grid-cols-3 gap-4 mb-6">
-                    <div>
-                        <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Etkinlik Başlığı</label>
-                        <input type="text" id="quizTitle" value="Prep Group 2 - Neon Grammar Battle" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Kaç Adet Soru Olsun?</label>
-                        <input type="number" id="questionCountInput" min="1" max="50" value="5" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Şık Sayısı</label>
-                            <select id="optionCountSelect" class="w-full px-3 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
-                                <option value="4">4 Şıklı (A-D)</option>
-                                <option value="5">5 Şıklı (A-E)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Soru Süresi (sn)</label>
-                            <input type="number" id="questionTimerInput" min="5" max="120" value="20" class="w-full px-3 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
-                        </div>
-                    </div>
+            <!-- SEKME 2: YENİ ETKİNLİK OLUŞTUR (SADECE PEMBE HOCA İÇİN AÇIK) -->
+            <div id="tab-create" class="hidden glass-card rounded-3xl p-6 sm:p-8">
+                <div id="createLockedMessage" class="hidden text-center py-10 sm:py-12 space-y-3">
+                    <div class="text-5xl">🔒</div>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-[#ff007f]">Soru Oluşturma Yetkiniz Bulunmuyor</h3>
+                    <p class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">Yeni etkinlik oluşturma ve soru yazma bölümü yalnızca <strong>Pembe Hoca</strong> hesabına açıktır. Diğer tüm analiz ve kontrol panellerini kullanabilirsiniz.</p>
                 </div>
 
-                <button onclick="generateQuestionForms()" class="px-6 py-3 rounded-xl neon-btn-pink font-extrabold text-sm mb-6">
-                    Soru Formlarını Hazırla ↓
-                </button>
+                <div id="createFormWrapper">
+                    <h3 class="text-lg sm:text-xl font-extrabold text-[#00f5d4] mb-6">Yeni İngilizce Etkinliği Oluştur ⚡</h3>
+                    
+                    <div id="creatorStep1" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Etkinlik Başlığı</label>
+                            <input type="text" id="quizTitle" value="Prep Group 2 - Grammar & Vocab Challenge" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Kaç Adet Soru Olsun?</label>
+                            <input type="number" id="questionCountInput" min="1" max="50" value="5" class="w-full px-4 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Şık Sayısı</label>
+                                <select id="optionCountSelect" class="w-full px-3 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
+                                    <option value="4">4 Şıklı (A-D)</option>
+                                    <option value="5">5 Şıklı (A-E)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-fuchsia-300 mb-1.5">Soru Süresi (sn)</label>
+                                <input type="number" id="questionTimerInput" min="5" max="120" value="20" class="w-full px-3 py-3 rounded-xl bg-[#080314] border border-purple-500/40 text-sm font-bold text-white">
+                            </div>
+                        </div>
+                    </div>
 
-                <div id="questionsBuilderList" class="space-y-6"></div>
+                    <button onclick="generateQuestionForms()" class="w-full sm:w-auto px-6 py-3 rounded-xl btn-pink-glow font-extrabold text-sm mb-6">
+                        Soru Formlarını Hazırla ↓
+                    </button>
 
-                <button id="publishQuizBtn" onclick="publishQuiz()" class="hidden mt-8 w-full py-4 rounded-2xl neon-btn-acid font-extrabold text-base transition">
-                    ✅ Etkinliği Kaydet ve Öğrenci Lobisine Gönder
-                </button>
+                    <div id="questionsBuilderList" class="space-y-6"></div>
+
+                    <button id="publishQuizBtn" onclick="publishQuiz()" class="hidden mt-8 w-full py-4 rounded-2xl btn-acid-glow font-extrabold text-sm sm:text-base transition">
+                        ✅ Etkinliği Kaydet ve Öğrenci Lobisine Gönder
+                    </button>
+                </div>
             </div>
 
             <!-- SEKME 3: DETAYLI ANALİZ -->
-            <div id="tab-analytics" class="hidden neon-glass rounded-3xl p-8 space-y-6">
-                <div class="flex flex-wrap justify-between items-center gap-4 border-b border-purple-500/30 pb-4">
+            <div id="tab-analytics" class="hidden glass-card rounded-3xl p-5 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-purple-500/30 pb-4">
                     <div>
-                        <h3 class="text-xl font-extrabold text-[#00f5d4]">Etkinlik Performans ve Detaylı Analiz</h3>
+                        <h3 class="text-lg sm:text-xl font-extrabold text-[#00f5d4]">Etkinlik Performans ve Detaylı Analiz</h3>
                         <p class="text-xs text-fuchsia-200/80">Boş bırakılan cevaplar ortalama süre hesaplamasına dahil edilmez.</p>
                     </div>
-                    <div class="flex bg-[#080314] p-1 rounded-xl border border-cyan-400/40">
-                        <button onclick="switchAnalyticsSubTab('students')" id="subTabStudents" class="px-4 py-2 rounded-lg text-xs font-extrabold neon-btn-pink text-white">👨‍🎓 Öğrenci Analizi</button>
-                        <button onclick="switchAnalyticsSubTab('questions')" id="subTabQuestions" class="px-4 py-2 rounded-lg text-xs font-extrabold text-cyan-200">❓ Soru Analizi</button>
+                    <div class="flex w-full sm:w-auto bg-[#080314] p-1 rounded-xl border border-cyan-400/40">
+                        <button onclick="switchAnalyticsSubTab('students')" id="subTabStudents" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-extrabold btn-pink-glow text-white">👨‍🎓 Öğrenci Analizi</button>
+                        <button onclick="switchAnalyticsSubTab('questions')" id="subTabQuestions" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-extrabold text-cyan-200">❓ Soru Analizi</button>
                     </div>
                 </div>
 
                 <!-- BÖLME 1: ÖĞRENCİ ANALİZ EKRANI -->
-                <div id="analyticsStudentsView" class="grid md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                <div id="analyticsStudentsView" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 overflow-x-auto pb-2">
+                        <table class="w-full text-left border-collapse min-w-[420px]">
                             <thead>
                                 <tr class="border-b border-purple-500/40 text-xs text-cyan-300 uppercase">
                                     <th class="py-3 px-2">Öğrenci Ad Soyad</th>
@@ -353,54 +417,54 @@
                         </table>
                     </div>
 
-                    <div id="studentDetailCard" class="p-6 rounded-2xl bg-[#080314]/90 neon-border-cyan">
-                        <p class="text-xs text-cyan-200/70 text-center mt-10">Detaylı karne görmek için soldaki listeden bir öğrencinin ismine tıklayın.</p>
+                    <div id="studentDetailCard" class="p-5 sm:p-6 rounded-2xl bg-[#080314]/90 border-cyan-glow">
+                        <p class="text-xs text-cyan-200/70 text-center my-8">Detaylı karne görmek için listeden bir öğrencinin ismine tıklayın.</p>
                     </div>
                 </div>
 
                 <!-- BÖLME 2: SORU ANALİZ EKRANI -->
                 <div id="analyticsQuestionsView" class="hidden space-y-4">
-                    <div id="questionAnalyticsList" class="grid md:grid-cols-2 gap-4"></div>
+                    <div id="questionAnalyticsList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
             </div>
         </section>
 
         <!-- EKRAN D: CANLI YARIŞMA EKRANI -->
         <section id="view-liveQuiz" class="hidden max-w-4xl mx-auto">
-            <div class="neon-glass rounded-3xl p-6 md:p-10">
-                <div class="flex justify-between items-center mb-6">
-                    <span id="liveQNumber" class="px-4 py-1.5 rounded-full bg-fuchsia-600/30 border border-fuchsia-400 text-fuchsia-200 font-extrabold text-sm">Soru 1 / 5</span>
+            <div class="glass-card rounded-3xl p-5 sm:p-6 md:p-10">
+                <div class="flex justify-between items-center mb-5 sm:mb-6">
+                    <span id="liveQNumber" class="px-3.5 sm:px-4 py-1.5 rounded-full bg-fuchsia-600/30 border border-fuchsia-400 text-fuchsia-200 font-extrabold text-xs sm:text-sm">Soru 1 / 5</span>
                     <div class="flex items-center gap-2">
                         <span class="text-xs text-cyan-300 font-bold">Kalan Süre:</span>
-                        <span id="liveTimerDisplay" class="w-12 h-12 rounded-full neon-btn-pink flex items-center justify-center font-extrabold text-lg">20</span>
+                        <span id="liveTimerDisplay" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full btn-pink-glow flex items-center justify-center font-extrabold text-base sm:text-lg">20</span>
                     </div>
                 </div>
 
-                <h2 id="liveQuestionText" class="text-xl md:text-3xl font-extrabold text-center my-8 leading-snug text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]"></h2>
+                <h2 id="liveQuestionText" class="text-lg sm:text-2xl md:text-3xl font-extrabold text-center my-6 sm:my-8 leading-snug text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]"></h2>
 
-                <!-- Egzotik Neon Şıklar -->
-                <div id="liveOptionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                <!-- Egzotik Şıklar (Mobilde 1 Sütun, Tablette/Webde 2 Sütun) -->
+                <div id="liveOptionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4"></div>
 
                 <!-- Soru Sonu İstatistik & İlk 10 Animasyonu -->
-                <div id="questionResultOverlay" class="hidden mt-8 p-6 rounded-2xl bg-[#070314]/95 border border-cyan-400/50 space-y-6">
-                    <div class="grid grid-cols-2 gap-4 text-center">
-                        <div class="p-4 rounded-xl bg-emerald-500/20 border border-[#00f5d4] shadow-[0_0_15px_rgba(0,245,212,0.25)]">
-                            <p class="text-xs text-[#00f5d4] font-extrabold">DOĞRU YAPAN</p>
-                            <p id="qCorrectCount" class="text-3xl font-extrabold text-white">0</p>
+                <div id="questionResultOverlay" class="hidden mt-6 sm:mt-8 p-4 sm:p-6 rounded-2xl bg-[#070314]/95 border border-cyan-400/50 space-y-5 sm:space-y-6">
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4 text-center">
+                        <div class="p-3.5 sm:p-4 rounded-xl bg-emerald-500/20 border border-[#00f5d4] shadow-[0_0_15px_rgba(0,245,212,0.25)]">
+                            <p class="text-[11px] sm:text-xs text-[#00f5d4] font-extrabold">DOĞRU YAPAN</p>
+                            <p id="qCorrectCount" class="text-2xl sm:text-3xl font-extrabold text-white">0</p>
                         </div>
-                        <div class="p-4 rounded-xl bg-rose-500/20 border border-[#ff007f] shadow-[0_0_15px_rgba(255,0,127,0.25)]">
-                            <p class="text-xs text-[#ff007f] font-extrabold">YANLIŞ / BOŞ</p>
-                            <p id="qWrongCount" class="text-3xl font-extrabold text-white">0</p>
+                        <div class="p-3.5 sm:p-4 rounded-xl bg-rose-500/20 border border-[#ff007f] shadow-[0_0_15px_rgba(255,0,127,0.25)]">
+                            <p class="text-[11px] sm:text-xs text-[#ff007f] font-extrabold">YANLIŞ / BOŞ</p>
+                            <p id="qWrongCount" class="text-2xl sm:text-3xl font-extrabold text-white">0</p>
                         </div>
                     </div>
 
                     <div>
-                        <h4 class="text-center font-extrabold text-[#ffe600] mb-3 drop-shadow-[0_0_8px_rgba(255,230,0,0.5)]">🏆 ANLIK İLK 10 SIRALAMASI</h4>
+                        <h4 class="text-center font-extrabold text-[#ffe600] text-sm sm:text-base mb-3 drop-shadow-[0_0_8px_rgba(255,230,0,0.5)]">🏆 ANLIK İLK 10 SIRALAMASI</h4>
                         <div id="top10Leaderboard" class="space-y-2 max-w-md mx-auto"></div>
                     </div>
 
                     <div id="adminNextQControl" class="hidden text-center">
-                        <button onclick="nextQuestion()" class="px-8 py-3 rounded-xl neon-btn-acid font-extrabold text-sm">
+                        <button onclick="nextQuestion()" class="w-full sm:w-auto px-8 py-3.5 rounded-xl btn-acid-glow font-extrabold text-sm active:scale-95 transition">
                             Sonraki Soruya Geç →
                         </button>
                     </div>
@@ -410,33 +474,33 @@
 
         <!-- EKRAN E: ÖDÜL VE MANEVİ KAZANANLAR EKRANI -->
         <section id="view-podium" class="hidden max-w-3xl mx-auto text-center">
-            <div class="neon-glass rounded-3xl p-8 md:p-12 space-y-8">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
                 <div>
                     <span class="px-4 py-1 rounded-full bg-[#ffe600]/20 border border-[#ffe600] text-[#ffe600] text-xs font-extrabold">ETKİNLİK TAMAMLANDI</span>
-                    <h2 class="text-3xl md:text-4xl font-extrabold mt-3 bg-gradient-to-r from-[#00f5d4] via-[#ffe600] to-[#ff007f] bg-clip-text text-transparent">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mt-3 bg-gradient-to-r from-[#00f5d4] via-[#ffe600] to-[#ff007f] bg-clip-text text-transparent">
                         Şampiyonlar Podyumu 🏆
                     </h2>
                 </div>
 
-                <div id="podiumTop3" class="grid grid-cols-3 gap-4 items-end pt-6"></div>
+                <div id="podiumTop3" class="grid grid-cols-3 gap-2 sm:gap-4 items-end pt-4 sm:pt-6"></div>
 
                 <!-- GİZLİ / MANEVİ KAZANANLAR -->
-                <div class="grid md:grid-cols-2 gap-4 pt-6 border-t border-purple-500/30">
-                    <div class="p-5 rounded-2xl bg-[#071921]/80 neon-border-cyan">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-purple-500/30">
+                    <div class="p-4 sm:p-5 rounded-2xl bg-[#071921]/80 border-cyan-glow">
                         <div class="text-2xl mb-1">⚡</div>
-                        <p class="text-xs font-extrabold text-[#00f5d4] uppercase">Manevi Kazanan • En Hızlı Çözen</p>
-                        <p id="fastestWinnerName" class="text-lg font-extrabold text-white mt-1">-</p>
+                        <p class="text-[11px] sm:text-xs font-extrabold text-[#00f5d4] uppercase">Manevi Kazanan • En Hızlı Çözen</p>
+                        <p id="fastestWinnerName" class="text-base sm:text-lg font-extrabold text-white mt-1">-</p>
                         <p id="fastestWinnerTime" class="text-xs text-cyan-200">Ort. 0.0 sn</p>
                     </div>
-                    <div class="p-5 rounded-2xl bg-[#1c0726]/80 border border-[#ff007f] shadow-[0_0_20px_rgba(255,0,127,0.25)]">
+                    <div class="p-4 sm:p-5 rounded-2xl bg-[#1c0726]/80 border border-[#ff007f] shadow-[0_0_20px_rgba(255,0,127,0.25)]">
                         <div class="text-2xl mb-1">🐢</div>
-                        <p class="text-xs font-extrabold text-[#ff007f] uppercase">Manevi Kazanan • En Sabırlı / Yavaş Çözen</p>
-                        <p id="slowestWinnerName" class="text-lg font-extrabold text-white mt-1">-</p>
+                        <p class="text-[11px] sm:text-xs font-extrabold text-[#ff007f] uppercase">Manevi Kazanan • En Sabırlı / Yavaş Çözen</p>
+                        <p id="slowestWinnerName" class="text-base sm:text-lg font-extrabold text-white mt-1">-</p>
                         <p id="slowestWinnerTime" class="text-xs text-fuchsia-200">Ort. 0.0 sn</p>
                     </div>
                 </div>
 
-                <button onclick="showView('studentLobby')" class="px-6 py-3 rounded-xl neon-btn-pink text-sm font-extrabold">
+                <button onclick="showView('studentLobby')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl btn-pink-glow text-sm font-extrabold">
                     Ana Lobiye Dön
                 </button>
             </div>
@@ -446,10 +510,10 @@
 
     <!-- QR KOD MODALI -->
     <div id="qrModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="neon-glass rounded-3xl p-8 max-w-sm w-full text-center relative">
-            <button onclick="toggleQRModal()" class="absolute top-4 right-4 text-fuchsia-300 hover:text-white text-xl font-bold">✕</button>
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center relative">
+            <button onclick="toggleQRModal()" class="absolute top-4 right-4 text-fuchsia-300 hover:text-white text-xl font-bold p-1">✕</button>
             <h3 class="text-xl font-extrabold text-[#00f5d4] mb-1">Sınıfa Katıl</h3>
-            <p class="text-xs text-fuchsia-200 mb-5">Kameranızı okutarak Grup 2 Neon Arena'ya bağlanın</p>
+            <p class="text-xs text-fuchsia-200 mb-5">Kameranızı okutarak Grup 2 Arena'ya bağlanın</p>
             <div id="qrcodeContainer" class="bg-white p-4 rounded-2xl inline-block mx-auto shadow-[0_0_25px_rgba(0,245,212,0.5)]"></div>
             <p id="siteUrlDisplay" class="text-xs text-[#00f5d4] mt-4 break-all font-mono"></p>
         </div>
@@ -484,13 +548,14 @@
 
         window.appState = {
             currentUser: null,
-            studentId: null,
-            studentName: null,
+            studentId: sessionStorage.getItem('g2_studentId') || null,
+            studentName: sessionStorage.getItem('g2_studentName') || null,
             isReady: false,
             activeQuiz: null,
             pastQuizzes: [],
             players: {},
             currentQuestionIndex: 0,
+            lastRenderedQuestionKey: null,
             timerInterval: null,
             questionStartTime: 0,
             hasAnsweredCurrent: false
@@ -499,8 +564,20 @@
         window.enterApp = () => {
             const el = document.getElementById('helloScreen');
             el.classList.add('fade-out');
-            setTimeout(() => el.style.display = 'none', 800);
+            setTimeout(() => {
+                el.style.display = 'none';
+                restoreSessionIfExists();
+            }, 800);
         };
+
+        // Mobil/Web Sayfa Yenileme Oturum Kurtarma
+        function restoreSessionIfExists() {
+            if (window.appState.studentId && window.appState.studentName) {
+                document.getElementById('studentJoinForm').classList.add('hidden');
+                document.getElementById('studentWaitingArea').classList.remove('hidden');
+                document.getElementById('displayStudentName').innerText = window.appState.studentName;
+            }
+        }
 
         window.toggleQRModal = () => {
             const modal = document.getElementById('qrModal');
@@ -518,6 +595,7 @@
                 document.getElementById('view-' + v).classList.add('hidden');
             });
             document.getElementById('view-' + viewName).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         // Yönetici Girişi (Troll Domain: @grup2babalar.gg)
@@ -553,16 +631,32 @@
             document.getElementById('adminTopNav').classList.remove('hidden');
             
             document.getElementById('welcomeAdminText').innerText = `Hoş geldin, ${username.toUpperCase()}`;
-            document.getElementById('roleBadge').innerText = role === 'superadmin' ? '👑 SÜPER YÖNETİCİ (HOCA)' : '🛡️ YÖNETİCİ';
+            document.getElementById('roleBadge').innerText = role === 'superadmin' ? '👑 SÜPER YÖNETİCİ (HOCA)' : '🛡️ YÖNETİCİ (SORU KİLİTLİ)';
 
+            // Yetki Kontrolü: Pembe Hoca her şeye açık; Berat & İbrahim sadece soru oluşturma/yazma kilitli
             if (role === 'superadmin') {
                 document.getElementById('teacherLockedOverlay').classList.add('hidden');
                 document.getElementById('teacherExclusiveContent').classList.remove('hidden');
-                document.getElementById('teacherLockBadge').innerText = '🔓 Yetki Aktif';
+                document.getElementById('teacherLockBadge').innerText = '🔓 Tam Yetki Aktif';
                 document.getElementById('teacherLockBadge').classList.add('text-[#00f5d4]');
+                
+                document.getElementById('navCreateLockIcon').classList.add('hidden');
+                document.getElementById('mobCreateLockIcon').classList.add('hidden');
+                document.getElementById('createLockedMessage').classList.add('hidden');
+                document.getElementById('createFormWrapper').classList.remove('hidden');
+                document.getElementById('pastCreateShortcutBtn').classList.remove('opacity-50');
+                document.getElementById('pastCreateShortcutBtn').innerHTML = '<span class="text-2xl leading-none">+</span> Yeni Etkinlik Oluştur';
             } else {
                 document.getElementById('teacherLockedOverlay').classList.remove('hidden');
                 document.getElementById('teacherExclusiveContent').classList.add('hidden');
+                document.getElementById('teacherLockBadge').innerText = '🔒 Soru Yazma Kilitli';
+                
+                document.getElementById('navCreateLockIcon').classList.remove('hidden');
+                document.getElementById('mobCreateLockIcon').classList.remove('hidden');
+                document.getElementById('createLockedMessage').classList.remove('hidden');
+                document.getElementById('createFormWrapper').classList.add('hidden');
+                document.getElementById('pastCreateShortcutBtn').classList.add('opacity-50');
+                document.getElementById('pastCreateShortcutBtn').innerHTML = '🔒 Yeni Etkinlik Oluşturma (Sadece Pembe Hoca)';
             }
 
             showView('adminPanel');
@@ -582,21 +676,32 @@
             ['past', 'create', 'analytics'].forEach(t => {
                 document.getElementById('tab-' + t).classList.add('hidden');
                 const navBtn = document.getElementById('nav-' + t);
+                const mobBtn = document.getElementById('mob-nav-' + t);
                 if (navBtn) {
-                    navBtn.classList.remove('neon-btn-pink', 'text-white');
+                    navBtn.classList.remove('btn-pink-glow', 'text-white');
                     navBtn.classList.add('text-cyan-200');
+                }
+                if (mobBtn) {
+                    mobBtn.classList.remove('btn-pink-glow', 'text-white');
+                    mobBtn.classList.add('text-cyan-200');
                 }
             });
             document.getElementById('tab-' + tab).classList.remove('hidden');
             const activeBtn = document.getElementById('nav-' + tab);
+            const activeMobBtn = document.getElementById('mob-nav-' + tab);
             if (activeBtn) {
-                activeBtn.classList.add('neon-btn-pink', 'text-white');
+                activeBtn.classList.add('btn-pink-glow', 'text-white');
                 activeBtn.classList.remove('text-cyan-200');
+            }
+            if (activeMobBtn) {
+                activeMobBtn.classList.add('btn-pink-glow', 'text-white');
+                activeMobBtn.classList.remove('text-cyan-200');
             }
             if (tab === 'analytics') renderAnalytics();
         };
 
         window.generateQuestionForms = () => {
+            if (window.appState.currentUser?.role !== 'superadmin') return;
             const count = parseInt(document.getElementById('questionCountInput').value) || 5;
             const optCount = parseInt(document.getElementById('optionCountSelect').value) || 4;
             const container = document.getElementById('questionsBuilderList');
@@ -609,21 +714,21 @@
                 for (let j = 0; j < optCount; j++) {
                     optionsHTML += `
                         <div class="flex items-center gap-2">
-                            <input type="radio" name="correct_${i}" value="${j}" ${j === 0 ? 'checked' : ''} class="w-4 h-4 accent-[#00f5d4]">
-                            <span class="font-extrabold text-xs text-[#00f5d4] w-5">${letters[j]})</span>
-                            <input type="text" id="q_${i}_opt_${j}" placeholder="${letters[j]} şıkkı..." class="flex-1 px-3 py-2 rounded-lg bg-[#05020d] border border-purple-500/40 text-sm text-white">
+                            <input type="radio" name="correct_${i}" value="${j}" ${j === 0 ? 'checked' : ''} class="w-4 h-4 accent-[#00f5d4] shrink-0">
+                            <span class="font-extrabold text-xs text-[#00f5d4] w-5 shrink-0">${letters[j]})</span>
+                            <input type="text" id="q_${i}_opt_${j}" placeholder="${letters[j]} şıkkı..." class="flex-1 min-w-0 px-3 py-2 rounded-lg bg-[#05020d] border border-purple-500/40 text-sm text-white">
                         </div>
                     `;
                 }
 
                 container.innerHTML += `
-                    <div class="p-5 rounded-2xl bg-[#0c0620]/90 border border-fuchsia-500/40 space-y-3">
-                        <div class="flex justify-between items-center">
+                    <div class="p-4 sm:p-5 rounded-2xl bg-[#0c0620]/90 border border-fuchsia-500/40 space-y-3">
+                        <div class="flex flex-wrap justify-between items-center gap-1">
                             <span class="font-extrabold text-[#ff007f] text-sm">Soru ${i + 1}</span>
-                            <span class="text-xs text-cyan-300">Doğru şıkkı solundaki yuvarlaktan seçin</span>
+                            <span class="text-[11px] sm:text-xs text-cyan-300">Doğru şıkkı solundaki yuvarlaktan seçin</span>
                         </div>
                         <input type="text" id="q_text_${i}" placeholder="İngilizce soruyu buraya yazın..." class="w-full px-4 py-3 rounded-xl bg-[#05020d] border border-cyan-400/40 text-sm font-bold text-white">
-                        <div class="grid md:grid-cols-2 gap-3 pt-2">${optionsHTML}</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">${optionsHTML}</div>
                     </div>
                 `;
             }
@@ -631,6 +736,7 @@
         };
 
         window.publishQuiz = async () => {
+            if (window.appState.currentUser?.role !== 'superadmin') return;
             const title = document.getElementById('quizTitle').value.trim();
             const count = parseInt(document.getElementById('questionCountInput').value);
             const optCount = parseInt(document.getElementById('optionCountSelect').value);
@@ -656,6 +762,8 @@
                 createdAt: Date.now()
             };
 
+            window.appState.lastRenderedQuestionKey = null;
+
             if (isFirebaseConfigured) {
                 await set(ref(db, 'activeQuiz'), quizData);
             } else {
@@ -676,6 +784,8 @@
             const id = 'stu_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             window.appState.studentId = id;
             window.appState.studentName = name;
+            sessionStorage.setItem('g2_studentId', id);
+            sessionStorage.setItem('g2_studentName', name);
 
             const playerObj = { id, name, ready: false, score: 0, answers: {} };
 
@@ -702,12 +812,12 @@
             const btn = document.getElementById('readyBtn');
             if (window.appState.isReady) {
                 btn.innerText = "✅ HAZIRSIN (BEKLENİYOR...)";
-                btn.classList.remove('neon-btn-acid');
-                btn.classList.add('neon-btn-pink', 'text-white');
+                btn.classList.remove('btn-acid-glow');
+                btn.classList.add('btn-pink-glow', 'text-white');
             } else {
                 btn.innerText = "⚡ HAZIRIM (READY)";
-                btn.classList.remove('neon-btn-pink', 'text-white');
-                btn.classList.add('neon-btn-acid');
+                btn.classList.remove('btn-pink-glow', 'text-white');
+                btn.classList.add('btn-acid-glow');
             }
 
             if (isFirebaseConfigured && window.appState.studentId) {
@@ -723,7 +833,7 @@
             const readyPlayers = playersList.filter(p => p.ready);
 
             if (!window.appState.activeQuiz) {
-                alert("Önce 'Yeni Etkinlik Oluştur' sekmesinden bir etkinlik hazırlamalısınız!");
+                alert("Pembe Hoca henüz bir etkinlik oluşturmadı!");
                 return;
             }
             if (readyPlayers.length < 5) {
@@ -732,7 +842,7 @@
             }
 
             if (isFirebaseConfigured) {
-                await update(ref(db, 'activeQuiz'), { status: 'active', currentQuestion: 0 });
+                await update(ref(db, 'activeQuiz'), { status: 'active', currentQuestion: 0, questionStartedAt: Date.now() });
             } else {
                 window.appState.activeQuiz.status = 'active';
                 window.appState.activeQuiz.currentQuestion = 0;
@@ -748,7 +858,7 @@
 
             const quiz = window.appState.activeQuiz;
             const q = quiz.questions[qIndex];
-            const neonClasses = ['opt-neon-0', 'opt-neon-1', 'opt-neon-2', 'opt-neon-3', 'opt-neon-4'];
+            const styleClasses = ['opt-style-0', 'opt-style-1', 'opt-style-2', 'opt-style-3', 'opt-style-4'];
             const shapes = ['▲', '◆', '●', '■', '★'];
 
             document.getElementById('questionResultOverlay').classList.add('hidden');
@@ -759,9 +869,9 @@
             grid.innerHTML = '';
             q.options.forEach((opt, idx) => {
                 grid.innerHTML += `
-                    <button onclick="submitAnswer(${idx})" class="opt-btn ${neonClasses[idx]} p-5 rounded-2xl text-left font-extrabold text-base md:text-lg hover:scale-[1.02] transition flex items-center gap-3">
-                        <span class="text-2xl opacity-90">${shapes[idx]}</span>
-                        <span>${opt}</span>
+                    <button onclick="submitAnswer(${idx})" class="opt-btn ${styleClasses[idx]} p-4 sm:p-5 rounded-2xl text-left font-extrabold text-sm sm:text-base md:text-lg active:scale-95 hover:scale-[1.02] transition flex items-center gap-3">
+                        <span class="text-xl sm:text-2xl opacity-90 shrink-0">${shapes[idx]}</span>
+                        <span class="break-words">${opt}</span>
                     </button>
                 `;
             });
@@ -772,7 +882,7 @@
 
             window.appState.timerInterval = setInterval(() => {
                 timeLeft--;
-                document.getElementById('liveTimerDisplay').innerText = timeLeft;
+                document.getElementById('liveTimerDisplay').innerText = Math.max(0, timeLeft);
                 if (timeLeft <= 0) {
                     clearInterval(window.appState.timerInterval);
                     finishCurrentQuestion();
@@ -792,6 +902,7 @@
 
             document.querySelectorAll('.opt-btn').forEach((btn, i) => {
                 if (i !== selectedIdx) btn.classList.add('opacity-25');
+                else btn.classList.add('ring-4', 'ring-white');
             });
 
             const sid = window.appState.studentId;
@@ -838,9 +949,9 @@
             const sorted = [...players].sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 10);
             const lb = document.getElementById('top10Leaderboard');
             lb.innerHTML = sorted.map((p, idx) => `
-                <div class="flex justify-between items-center px-4 py-2.5 rounded-xl bg-[#110829] border border-fuchsia-500/40 text-sm">
-                    <span><strong class="text-[#ffe600]">#${idx + 1}</strong> ${p.name}</span>
-                    <span class="font-extrabold text-[#00f5d4]">${p.score || 0} pts</span>
+                <div class="flex justify-between items-center px-3.5 sm:px-4 py-2.5 rounded-xl bg-[#110829] border border-fuchsia-500/40 text-xs sm:text-sm">
+                    <span class="truncate pr-2"><strong class="text-[#ffe600]">#${idx + 1}</strong> ${p.name}</span>
+                    <span class="font-extrabold text-[#00f5d4] shrink-0">${p.score || 0} pts</span>
                 </div>
             `).join('');
 
@@ -856,7 +967,7 @@
             const nextIdx = window.appState.currentQuestionIndex + 1;
             if (nextIdx < window.appState.activeQuiz.questions.length) {
                 if (isFirebaseConfigured) {
-                    await update(ref(db, 'activeQuiz'), { currentQuestion: nextIdx });
+                    await update(ref(db, 'activeQuiz'), { currentQuestion: nextIdx, questionStartedAt: Date.now() });
                 } else {
                     startLiveQuestion(nextIdx);
                 }
@@ -870,6 +981,7 @@
         };
 
         function showFinalPodium() {
+            clearInterval(window.appState.timerInterval);
             showView('podium');
             confetti({
                 particleCount: 160,
@@ -882,15 +994,15 @@
             const sortedByScore = [...players].sort((a, b) => (b.score || 0) - (a.score || 0));
 
             const top3 = [sortedByScore[1], sortedByScore[0], sortedByScore[2]].filter(Boolean);
-            const heights = ['h-28', 'h-36', 'h-24'];
+            const heights = ['h-24 sm:h-28', 'h-32 sm:h-36', 'h-20 sm:h-24'];
             const medals = ['🥈 2.', '🥇 1.', '🥉 3.'];
 
             document.getElementById('podiumTop3').innerHTML = top3.map((p, i) => `
                 <div class="flex flex-col items-center">
-                    <p class="font-bold text-xs md:text-sm mb-2 truncate max-w-[110px] text-cyan-200">${p.name}</p>
+                    <p class="font-bold text-[11px] sm:text-sm mb-2 truncate max-w-[95px] sm:max-w-[120px] text-cyan-200">${p.name}</p>
                     <div class="w-full ${heights[i]} rounded-t-2xl bg-gradient-to-t from-[#7000ff] via-[#ff007f] to-[#00f5d4] flex flex-col items-center justify-center p-2 shadow-[0_0_25px_rgba(255,0,127,0.5)]">
-                        <span class="font-extrabold text-lg text-white">${medals[i]}</span>
-                        <span class="text-xs font-extrabold text-white">${p.score || 0}p</span>
+                        <span class="font-extrabold text-base sm:text-lg text-white">${medals[i]}</span>
+                        <span class="text-[11px] sm:text-xs font-extrabold text-white">${p.score || 0}p</span>
                     </div>
                 </div>
             `).join('');
@@ -920,12 +1032,12 @@
             const container = document.getElementById('pastEventsContainer');
             if (window.appState.pastQuizzes.length === 0) return;
             container.innerHTML = window.appState.pastQuizzes.map(q => `
-                <div class="p-4 rounded-xl bg-[#090418] border border-cyan-400/40 flex justify-between items-center mb-2">
-                    <div>
-                        <p class="font-bold text-sm text-white">${q.title}</p>
+                <div class="p-4 rounded-xl bg-[#090418] border border-cyan-400/40 flex justify-between items-center gap-2 mb-2">
+                    <div class="min-w-0">
+                        <p class="font-bold text-sm text-white truncate">${q.title}</p>
                         <p class="text-xs text-fuchsia-300">${q.questions.length} Soru • Tamamlandı</p>
                     </div>
-                    <button onclick="switchAdminTab('analytics')" class="px-3 py-1.5 rounded-lg neon-btn-pink text-xs font-extrabold">Analizi Gör</button>
+                    <button onclick="switchAdminTab('analytics')" class="px-3 py-1.5 rounded-lg btn-pink-glow text-xs font-extrabold shrink-0">Analizi Gör</button>
                 </div>
             `).join('');
         }
@@ -934,13 +1046,13 @@
             if (sub === 'students') {
                 document.getElementById('analyticsStudentsView').classList.remove('hidden');
                 document.getElementById('analyticsQuestionsView').classList.add('hidden');
-                document.getElementById('subTabStudents').classList.add('neon-btn-pink', 'text-white');
-                document.getElementById('subTabQuestions').classList.remove('neon-btn-pink', 'text-white');
+                document.getElementById('subTabStudents').classList.add('btn-pink-glow', 'text-white');
+                document.getElementById('subTabQuestions').classList.remove('btn-pink-glow', 'text-white');
             } else {
                 document.getElementById('analyticsStudentsView').classList.add('hidden');
                 document.getElementById('analyticsQuestionsView').classList.remove('hidden');
-                document.getElementById('subTabQuestions').classList.add('neon-btn-pink', 'text-white');
-                document.getElementById('subTabStudents').classList.remove('neon-btn-pink', 'text-white');
+                document.getElementById('subTabQuestions').classList.add('btn-pink-glow', 'text-white');
+                document.getElementById('subTabStudents').classList.remove('btn-pink-glow', 'text-white');
             }
         };
 
@@ -1025,7 +1137,7 @@
                 const lastSolver = sortedBySpeed[sortedBySpeed.length - 1] ? `${sortedBySpeed[sortedBySpeed.length - 1].name} (${sortedBySpeed[sortedBySpeed.length - 1].timeTaken}s)` : 'Yok';
 
                 return `
-                    <div class="p-5 rounded-2xl bg-[#080314]/90 border border-fuchsia-500/40 space-y-2">
+                    <div class="p-4 sm:p-5 rounded-2xl bg-[#080314]/90 border border-fuchsia-500/40 space-y-2">
                         <div class="flex justify-between">
                             <span class="font-extrabold text-[#ff007f] text-sm">Soru ${qIdx + 1}</span>
                             <span class="text-xs bg-[#00f5d4]/20 text-[#00f5d4] border border-[#00f5d4]/40 px-2 py-0.5 rounded font-extrabold">${correctCount} Doğru</span>
@@ -1033,8 +1145,8 @@
                         <p class="text-sm font-bold text-white">${q.text}</p>
                         <div class="grid grid-cols-3 gap-2 pt-2 text-xs border-t border-purple-500/30">
                             <div><span class="text-slate-400 block">Ort. Süre</span><strong class="text-white">${avgSec} sn</strong></div>
-                            <div><span class="text-slate-400 block">⚡ İlk Çözen</span><strong class="text-[#00f5d4]">${firstSolver}</strong></div>
-                            <div><span class="text-slate-400 block">🐢 Son Çözen</span><strong class="text-[#ff007f]">${lastSolver}</strong></div>
+                            <div><span class="text-slate-400 block">⚡ İlk Çözen</span><strong class="text-[#00f5d4] break-words">${firstSolver}</strong></div>
+                            <div><span class="text-slate-400 block">🐢 Son Çözen</span><strong class="text-[#ff007f] break-words">${lastSolver}</strong></div>
                         </div>
                     </div>
                 `;
@@ -1042,6 +1154,7 @@
         }
 
         window.saveExclusiveQuestion = () => {
+            if (window.appState.currentUser?.role !== 'superadmin') return;
             const note = document.getElementById('extraQuestionNote').value.trim();
             if (!note) return;
             document.getElementById('exclusiveList').innerHTML += `<div class="p-2 rounded bg-[#05020d] border border-pink-500/40">⚡ ${note}</div>`;
@@ -1077,7 +1190,13 @@
                 window.appState.activeQuiz = val;
                 syncUIWithState();
                 if (val?.status === 'active') {
-                    startLiveQuestion(val.currentQuestion || 0);
+                    const qIdx = val.currentQuestion || 0;
+                    const qKey = `${val.createdAt}_${qIdx}_${val.questionStartedAt || 0}`;
+                    // Çift tetiklenmeyi (bug) önleyen kilit: sadece soru değiştiğinde başlat
+                    if (window.appState.lastRenderedQuestionKey !== qKey) {
+                        window.appState.lastRenderedQuestionKey = qKey;
+                        startLiveQuestion(qIdx);
+                    }
                 } else if (val?.status === 'finished') {
                     showFinalPodium();
                 }
